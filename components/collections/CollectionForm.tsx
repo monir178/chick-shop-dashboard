@@ -22,6 +22,7 @@ import ImageUpload from "../customUi/ImageUpload";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import CustomLoader from "../CustomLoader";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -58,8 +59,14 @@ const CollectionForm = () => {
     } catch (error) {
       console.log("[Collection Form]", error);
       toast.error("Something went wrong! Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <CustomLoader />;
+  }
 
   return (
     <div className="p-10">
@@ -114,13 +121,17 @@ const CollectionForm = () => {
             )}
           />
           <div className="flex gap-6">
-            <Button className="bg-green-500 hover:bg-green-400" type="submit">
+            <Button
+              disabled={loading}
+              className="bg-green-500 hover:bg-green-400"
+              type="submit">
               Submit
             </Button>
             <Button
               className="bg-red-500 hover:bg-red-400"
               onClick={() => router.push("/collections")}
-              type="button">
+              type="button"
+              disabled={loading}>
               Discard
             </Button>
           </div>
