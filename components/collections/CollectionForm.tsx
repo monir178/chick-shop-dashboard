@@ -20,6 +20,8 @@ import {
 import { Input } from "@/components/ui/input";
 import ImageUpload from "../customUi/ImageUpload";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -29,6 +31,8 @@ const formSchema = z.object({
 
 const CollectionForm = () => {
   const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,7 +44,21 @@ const CollectionForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      setLoading(true);
+      const res = await fetch("/api/collections", {
+        method: "POST",
+        body: JSON.stringify(values),
+      });
+      if (res.ok) {
+        setLoading(false);
+        toast.success("Collection created Successfully");
+        router.push("/collections");
+      }
+    } catch (error) {
+      console.log("[Collection Form]", error);
+      toast.error("Something went wrong! Please try again.");
+    }
   };
 
   return (
@@ -96,11 +114,11 @@ const CollectionForm = () => {
             )}
           />
           <div className="flex gap-6">
-            <Button className="bg-green-500" type="submit">
+            <Button className="bg-green-500 hover:bg-green-400" type="submit">
               Submit
             </Button>
             <Button
-              className="bg-red-500"
+              className="bg-red-500 hover:bg-red-400"
               onClick={() => router.push("/collections")}
               type="button">
               Discard
