@@ -64,10 +64,6 @@ const CollectionForm = () => {
     }
   };
 
-  if (loading) {
-    return <CustomLoader />;
-  }
-
   return (
     <div className="p-10">
       <p className="text-heading2-bold text-gray-600">Create Collection</p>

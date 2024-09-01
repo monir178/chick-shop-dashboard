@@ -24,14 +24,23 @@ const Delete: React.FC<IDeleteProps> = ({ id }) => {
   const [loading, setLoading] = useState(false);
 
   const onDelete = async () => {
+    const toastId = toast.loading("Deleting...");
     try {
       setLoading(true);
       const res = await fetch(`/api/collections/${id}`, {
         method: "DELETE",
       });
+
+      if (res.ok) {
+        setLoading(false);
+        window.location.href = "/collections";
+        toast.success("Collections deleted successfully", { id: toastId });
+      } else {
+        toast.error("Failed to delete collection", { id: toastId });
+      }
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong! Please try again.");
+      toast.error("Something went wrong! Please try again.", { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -40,7 +49,9 @@ const Delete: React.FC<IDeleteProps> = ({ id }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <Button className="bg-red-500 hover:bg-red-400 text-white">
+        <Button
+          disabled={loading}
+          className="bg-red-500 hover:bg-red-400 text-white">
           <Trash strokeWidth={3} className="size-4" />
         </Button>
       </AlertDialogTrigger>
@@ -55,9 +66,12 @@ const Delete: React.FC<IDeleteProps> = ({ id }) => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-red-500 hover:bg-red-400">
-            Continue
+          <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={onDelete}
+            disabled={loading}
+            className="bg-red-500 hover:bg-red-400">
+            Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

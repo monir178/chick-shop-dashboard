@@ -46,7 +46,13 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
           return (
             <Button
               className="bg-gray-600 text-white hover:bg-gray-500"
-              onClick={() => open()}>
+              onClick={() => {
+                if (open) {
+                  open();
+                } else {
+                  console.error("Open function is not available");
+                }
+              }}>
               <Upload className="size-4 mr-2" />
               Upload an Image
             </Button>
