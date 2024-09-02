@@ -77,6 +77,10 @@ const CollectionForm: React.FC<ICollectionFormProps> = ({ initialData }) => {
         );
         window.location.href = "/collections";
         router.push("/collections");
+      } else {
+        toast.error(
+          "Something went wrong! Check if the collection is already exists"
+        );
       }
     } catch (error) {
       console.log("[Collection Form]", error);

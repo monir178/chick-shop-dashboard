@@ -4,7 +4,7 @@ import { Trash, Upload } from "lucide-react";
 import Image from "next/image";
 
 interface ImageUploadProps {
-  value: string[];
+  value: string | string[]; // Adjusted to accept either a single string or an array of strings
   onChange: (value: string) => void;
   onRemove: (value: string) => void;
 }
@@ -18,17 +18,20 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     onChange(result.info.secure_url);
   };
 
+  // Normalize `value` to always be an array for easier mapping
+  const images = Array.isArray(value) ? value : value ? [value] : [];
+
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center gap-4">
-        {value.map((url) => (
+        {images.map((url) => (
           <div key={url} className="relative w-[200px] h-[200px]">
             <div className="absolute top-0 right-0 z-10">
               <Button
                 type="button"
                 onClick={() => onRemove(url)}
                 size="icon"
-                className="bg-red-600 hover:bg-red-500  border-white border text-white">
+                className="bg-red-600 hover:bg-red-500 border-white border text-white">
                 <Trash className="h-4 w-4" />
               </Button>
             </div>
