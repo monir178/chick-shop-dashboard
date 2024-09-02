@@ -5,3 +5,20 @@ type TCollectionType = {
     image: string;
     products: TProductType[];
 }
+
+type TProductType = {
+    _id: string;
+    title: string;
+    description: string;
+    media: [string];
+    category: string;
+    collections: [TCollectionType];
+    tags: [string];
+    sizes: [string];
+    colors: [string];
+    price: number;
+    expense: number;
+    createdAt: Date;
+    updatedAt: Date;
+
+}
