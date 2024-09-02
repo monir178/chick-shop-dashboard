@@ -2,12 +2,22 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import Delete from "../customUi/Delete";
+import Link from "next/link";
+import { buttonVariants } from "../ui/button";
 
 export const columns: ColumnDef<TCollectionType>[] = [
   {
     accessorKey: "title",
     header: "Title",
-    cell: ({ row }) => <p>{row.original.title}</p>,
+    cell: ({ row }) => (
+      <Link
+        className={buttonVariants({
+          variant: "link",
+        })}
+        href={`/collections/${row.original._id}`}>
+        {row.original.title}
+      </Link>
+    ),
   },
   {
     accessorKey: "products",

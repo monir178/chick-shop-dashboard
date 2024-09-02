@@ -1,7 +1,7 @@
 "use client";
 
 import { columns } from "@/components/collections/CollectionColumns";
-import CustomLoader from "@/components/CustomLoader";
+import CustomLoader from "@/components/customUi/CustomLoader";
 import { DataTable } from "@/components/customUi/DataTable";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
