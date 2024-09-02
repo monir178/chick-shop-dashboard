@@ -3,13 +3,13 @@ import { Button } from "../ui/button";
 import { Trash, Upload } from "lucide-react";
 import Image from "next/image";
 
-interface IImageUploadProps {
+interface ImageUploadProps {
   value: string[];
   onChange: (value: string) => void;
   onRemove: (value: string) => void;
 }
 
-const ImageUpload: React.FC<IImageUploadProps> = ({
+const ImageUpload: React.FC<ImageUploadProps> = ({
   onChange,
   onRemove,
   value,
@@ -21,40 +21,42 @@ const ImageUpload: React.FC<IImageUploadProps> = ({
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center gap-4">
-        {value.map((url, index) => (
-          <div key={index} className="relative w-[200px] h-[200px]">
+        {value.map((url) => (
+          <div key={url} className="relative w-[200px] h-[200px]">
             <div className="absolute top-0 right-0 z-10">
               <Button
+                type="button"
                 onClick={() => onRemove(url)}
                 size="icon"
                 className="bg-red-600 hover:bg-red-500  border-white border text-white">
-                <Trash className="size-4" />
+                <Trash className="h-4 w-4" />
               </Button>
             </div>
             <Image
               src={url}
               alt="collection"
-              className="object-cover   rounded-lg"
+              className="object-cover rounded-lg"
               fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
         ))}
       </div>
-      <CldUploadWidget onSuccess={onUpload} uploadPreset="x59efxzq">
+
+      <CldUploadWidget uploadPreset="x59efxzq" onUpload={onUpload}>
         {({ open }) => {
           return (
             <Button
-              className="bg-gray-600 text-white hover:bg-gray-500"
+              type="button"
               onClick={() => {
                 if (open) {
                   open();
                 } else {
                   console.error("Open function is not available");
                 }
-              }}>
-              <Upload className="size-4 mr-2" />
-              Upload an Image
+              }}
+              className="bg-gray-600 text-white hover:bg-gray-500">
+              <Upload className="h-4 w-4 mr-2" />
+              Upload Image
             </Button>
           );
         }}
