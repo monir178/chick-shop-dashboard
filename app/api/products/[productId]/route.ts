@@ -1,3 +1,4 @@
+import Collection from "@/lib/models/Collection"
 import Product from "@/lib/models/Product"
 import { connectToDB } from "@/lib/mongoDB"
 import { NextRequest, NextResponse } from "next/server"
@@ -7,7 +8,7 @@ export const GET = async (req: NextRequest, { params }: { params: { productId: s
 
         await connectToDB()
 
-        const product = await Product.findById(params.productId)
+        const product = await Product.findById(params.productId).populate({ path: "collections", model: Collection })
 
         if (!product) {
             return new NextResponse(JSON.stringify({ message: "product not found" }), { status: 404 })
@@ -17,5 +18,6 @@ export const GET = async (req: NextRequest, { params }: { params: { productId: s
 
     } catch (error) {
         console.log("productId_GET =>", error);
+        return new NextResponse("Internal Error", { status: 500 })
     }
 }

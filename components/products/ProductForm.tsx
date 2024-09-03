@@ -51,6 +51,7 @@ const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
 
   const getCollections = async () => {
     try {
+      setLoading(true);
       const res = await fetch("/api/collections", {
         method: "GET",
       });
@@ -124,11 +125,17 @@ const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
     }
   };
 
-  return (
+  // console.log("initialData =>", initialData);
+  // console.log("collections =>", collections);
+
+  return loading ? (
+    <CustomLoader />
+  ) : (
     <div className="p-10">
       {initialData ? (
         <div className="flex items-center justify-between">
           <p className="text-heading2-bold">Edit Product</p>
+          <Delete id={initialData._id} item="product" />
         </div>
       ) : (
         <p className="text-heading2-bold">Create Product</p>
@@ -270,32 +277,35 @@ const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="collections"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Collections</FormLabel>
-                  <FormControl>
-                    <MultiSelect
-                      collections={collections}
-                      placeholder="Collections"
-                      value={field.value}
-                      onChange={(_id) => field.onChange([...field.value, _id])}
-                      onRemove={(_idToRemove) =>
-                        field.onChange([
-                          ...field.value.filter(
-                            (collectionId) => collectionId !== _idToRemove
-                          ),
-                        ])
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-500" />
-                </FormItem>
-              )}
-            />
-
+            {collections.length > 0 && (
+              <FormField
+                control={form.control}
+                name="collections"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Collections</FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        collections={collections}
+                        placeholder="Collections"
+                        value={field.value}
+                        onChange={(_id) =>
+                          field.onChange([...field.value, _id])
+                        }
+                        onRemove={(_idToRemove) =>
+                          field.onChange([
+                            ...field.value.filter(
+                              (collectionId) => collectionId !== _idToRemove
+                            ),
+                          ])
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-500" />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="colors"

@@ -40,7 +40,7 @@ const ProductsPage = () => {
   return (
     <div className="px-10 py-5">
       <div className="flex items-center justify-between">
-        <p className="text-heading2-bold text-gray-600">Collections</p>
+        <p className="text-heading2-bold text-gray-600">Products</p>
         <Button onClick={() => router.push("/products/new")}>
           <Plus className="size-6 mr-2" />
           Create Product
