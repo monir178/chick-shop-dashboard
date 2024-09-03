@@ -18,25 +18,27 @@ import { toast } from "sonner";
 
 interface IDeleteProps {
   id: string;
+  item: string;
 }
 
-const Delete: React.FC<IDeleteProps> = ({ id }) => {
+const Delete: React.FC<IDeleteProps> = ({ item, id }) => {
   const [loading, setLoading] = useState(false);
 
   const onDelete = async () => {
     const toastId = toast.loading("Deleting...");
     try {
       setLoading(true);
-      const res = await fetch(`/api/collections/${id}`, {
+      const itemType = item === "product" ? "products" : "collections";
+      const res = await fetch(`/api/${itemType}/${id}`, {
         method: "DELETE",
       });
 
       if (res.ok) {
         setLoading(false);
-        window.location.href = "/collections";
-        toast.success("Collections deleted successfully", { id: toastId });
+        window.location.href = `/${itemType}`;
+        toast.success(`${item} deleted successfully`, { id: toastId });
       } else {
-        toast.error("Failed to delete collection", { id: toastId });
+        toast.error(`Failed to delete ${item}`, { id: toastId });
       }
     } catch (error) {
       console.log(error);
@@ -62,7 +64,7 @@ const Delete: React.FC<IDeleteProps> = ({ id }) => {
           </AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
-            collection
+            {item}.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

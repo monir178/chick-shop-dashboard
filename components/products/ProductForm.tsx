@@ -40,7 +40,7 @@ const formSchema = z.object({
 });
 
 interface IProductFormProps {
-  initialData?: TProductType | null; //Must have "?" to make it optional
+  initialData?: TProductType | null;
 }
 
 const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {

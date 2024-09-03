@@ -26,6 +26,6 @@ export const columns: ColumnDef<TCollectionType>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <Delete id={row.original._id} />,
+    cell: ({ row }) => <Delete item="collection" id={row.original._id} />,
   },
 ];
