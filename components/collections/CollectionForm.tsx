@@ -150,8 +150,12 @@ const CollectionForm: React.FC<ICollectionFormProps> = ({ initialData }) => {
                 <FormLabel>Image</FormLabel>
                 <FormControl>
                   <ImageUpload
-                    value={field.value ? [field.value] : []}
-                    onChange={(url) => field.onChange(url)}
+                    value={field.value ? [field.value] : []} // Ensure value is always an array
+                    onChange={(url) => {
+                      // If an array is returned, pick the first item
+                      const imageUrl = Array.isArray(url) ? url[0] : url;
+                      field.onChange(imageUrl);
+                    }}
                     onRemove={() => field.onChange("")}
                   />
                 </FormControl>

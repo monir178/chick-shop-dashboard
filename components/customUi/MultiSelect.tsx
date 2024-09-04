@@ -54,6 +54,7 @@ const MultiSelect: React.FC<IMultiSelectProps> = ({
             key={collection._id}>
             {collection.title}
             <button
+              type="button"
               onClick={() => onRemove(collection._id)}
               className="ml-1 hover:text-red-500">
               <X size={18} />

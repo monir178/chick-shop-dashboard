@@ -1,11 +1,14 @@
+"use client";
+
 import { CldUploadWidget } from "next-cloudinary";
 import { Button } from "../ui/button";
 import { Trash, Upload } from "lucide-react";
 import Image from "next/image";
+import { useCallback, useState } from "react";
 
 interface ImageUploadProps {
   value: string[];
-  onChange: (value: string) => void;
+  onChange: (value: string | string[]) => void;
   onRemove: (value: string) => void;
 }
 
@@ -14,12 +17,25 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   onRemove,
   value,
 }) => {
-  console.log("Image value => ", value);
+  const [images, setImages] = useState<string[]>([]);
+
+  console.log("Image Field value => ", value);
 
   const onUpload = (result: any) => {
-    onChange(result.info.secure_url);
+    setImages((prevState) => {
+      const updatedImages = [...prevState, result.info.secure_url];
+
+      setTimeout(() => {
+        onChange(updatedImages);
+      }, 50);
+
+      return updatedImages;
+    });
+
     console.log(result);
   };
+
+  console.log("Images state => ", images);
 
   return (
     <div>
@@ -45,7 +61,12 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         ))}
       </div>
 
-      <CldUploadWidget uploadPreset="x59efxzq" onSuccess={onUpload}>
+      <CldUploadWidget
+        options={{
+          multiple: true,
+        }}
+        uploadPreset="x59efxzq"
+        onSuccess={onUpload}>
         {({ open }) => {
           return (
             <Button

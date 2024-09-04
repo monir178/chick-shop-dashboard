@@ -22,7 +22,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Delete from "../customUi/Delete";
-import CustomLoader from "../customUi/CustomLoader";
 import MultiText from "../customUi/MultiText";
 import MultiSelect from "../customUi/MultiSelect";
 
@@ -183,7 +182,10 @@ const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
                 <FormControl>
                   <ImageUpload
                     value={field.value || []}
-                    onChange={(url) => field.onChange([...field.value, url])}
+                    onChange={(url) => {
+                      console.log("From parent =>", url);
+                      field.onChange(url);
+                    }}
                     onRemove={(url) => {
                       const updatedValue = field.value.filter(
                         (image) => image !== url
