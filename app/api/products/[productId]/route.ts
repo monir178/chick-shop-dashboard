@@ -103,3 +103,39 @@ export const POST = async (req: NextRequest, { params }: { params: { productId: 
 
     }
 }
+
+export const DELETE = async (req: NextRequest, { params }: { params: { productId: string } }) => {
+
+    try {
+        const { userId } = auth();
+
+        if (!userId) {
+            return new NextResponse("Unauthorized", { status: 401 })
+        }
+
+        await connectToDB();
+
+        const product = await Product.findById(params.productId);
+
+        if (!product) {
+            return new NextResponse("Product not found", { status: 404 })
+        }
+
+        await Product.findByIdAndDelete(product._id);
+
+        // Update collection
+        await Promise.all([
+            product.collections.map((collectionId: string) => {
+                Collection.findByIdAndUpdate(collectionId, {
+                    $pull: {
+                        products: product._id
+                    }
+                })
+            })
+        ])
+
+    } catch (error) {
+        console.log("productId_DELETE =>", error);
+        return new NextResponse("Internal Error", { status: 500 })
+    }
+}
