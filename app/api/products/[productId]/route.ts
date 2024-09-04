@@ -20,6 +20,7 @@ export const GET = async (req: NextRequest, { params }: { params: { productId: s
     } catch (error) {
         console.log("productId_GET =>", error);
         return new NextResponse("Internal Error", { status: 500 })
+
     }
 }
 
@@ -99,5 +100,6 @@ export const POST = async (req: NextRequest, { params }: { params: { productId: 
     } catch (error) {
         console.log("productId_POST =>", error);
         return new NextResponse("Internal Error", { status: 500 })
+
     }
 }

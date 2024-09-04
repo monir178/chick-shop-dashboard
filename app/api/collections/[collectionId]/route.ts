@@ -70,7 +70,15 @@ export const DELETE = async (req: NextRequest, { params }: { params: { collectio
 
         await Collection.findByIdAndDelete(params.collectionId)
 
+
         await Product.updateMany({ collections: params.collectionId }, { $pull: { collections: params.collectionId } })
+
+        await Product.updateMany(
+            { collections: params.collectionId },
+            { $pull: { collections: params.collectionId } }
+        );
+
+
 
         return new NextResponse("Collection is deleted", { status: 200 })
 

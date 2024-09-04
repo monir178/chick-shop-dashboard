@@ -21,6 +21,8 @@ const ProductDetails = ({ params }: { params: { productId: string } }) => {
       setLoading(false);
     } catch (error) {
       console.log("productId_GET", error);
+
+      console.log("ProductId_GET => ", error);
     } finally {
       setLoading(false);
     }
