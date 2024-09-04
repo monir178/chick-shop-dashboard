@@ -1,4 +1,5 @@
 import Collection from "@/lib/models/Collection";
+import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
 import { auth } from "@clerk/nextjs/server";
 
@@ -19,6 +20,7 @@ export const GET = async (req: NextRequest, { params }: { params: { collectionId
 
     } catch (error) {
         console.log("CollectionId_GET =>", error);
+        return new NextResponse("Internal Error", { status: 500 })
     }
 }
 
@@ -67,6 +69,8 @@ export const DELETE = async (req: NextRequest, { params }: { params: { collectio
         await connectToDB();
 
         await Collection.findByIdAndDelete(params.collectionId)
+
+        await Product.updateMany({ collections: params.collectionId }, { $pull: { collections: params.collectionId } })
 
         return new NextResponse("Collection is deleted", { status: 200 })
 

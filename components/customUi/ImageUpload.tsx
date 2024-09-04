@@ -4,7 +4,7 @@ import { Trash, Upload } from "lucide-react";
 import Image from "next/image";
 
 interface ImageUploadProps {
-  value: string | string[]; // Adjusted to accept either a single string or an array of strings
+  value: string[];
   onChange: (value: string) => void;
   onRemove: (value: string) => void;
 }
@@ -14,24 +14,24 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   onRemove,
   value,
 }) => {
+  console.log("Image value => ", value);
+
   const onUpload = (result: any) => {
     onChange(result.info.secure_url);
+    console.log(result);
   };
-
-  // Normalize `value` to always be an array for easier mapping
-  const images = Array.isArray(value) ? value : value ? [value] : [];
 
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center gap-4">
-        {images.map((url) => (
+        {value.map((url) => (
           <div key={url} className="relative w-[200px] h-[200px]">
             <div className="absolute top-0 right-0 z-10">
               <Button
                 type="button"
                 onClick={() => onRemove(url)}
-                size="icon"
-                className="bg-red-600 hover:bg-red-500 border-white border text-white">
+                size="sm"
+                className="bg-red-500 text-white">
                 <Trash className="h-4 w-4" />
               </Button>
             </div>
@@ -45,19 +45,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         ))}
       </div>
 
-      <CldUploadWidget uploadPreset="x59efxzq" onUpload={onUpload}>
+      <CldUploadWidget uploadPreset="x59efxzq" onSuccess={onUpload}>
         {({ open }) => {
           return (
             <Button
               type="button"
-              onClick={() => {
-                if (open) {
-                  open();
-                } else {
-                  console.error("Open function is not available");
-                }
-              }}
-              className="bg-gray-600 text-white hover:bg-gray-500">
+              onClick={() => open()}
+              className="bg-gray-600 hover:bg-gray-500 text-white">
               <Upload className="h-4 w-4 mr-2" />
               Upload Image
             </Button>

@@ -18,8 +18,8 @@ import {
 
 import { Input } from "@/components/ui/input";
 import ImageUpload from "../customUi/ImageUpload";
-import { useParams, useRouter } from "next/navigation";
-import { KeyboardEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Delete from "../customUi/Delete";
 import CustomLoader from "../customUi/CustomLoader";
@@ -113,8 +113,9 @@ const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
       if (res.ok) {
         setLoading(false);
         toast.success(`Product ${initialData ? "updated" : "created"}`);
-        window.location.href = "/products";
-        router.push("/products");
+        // window.location.href = "/products";
+        // router.push("/products");
+        console.log(res);
       }
     } catch (err) {
       console.log("[products_POST]", err);
@@ -124,11 +125,14 @@ const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
     }
   };
 
-  return (
+  return loading ? (
+    <CustomLoader />
+  ) : (
     <div className="p-10">
       {initialData ? (
         <div className="flex items-center justify-between">
           <p className="text-heading2-bold">Edit Product</p>
+          <Delete id={initialData._id} item="product" />
         </div>
       ) : (
         <p className="text-heading2-bold">Create Product</p>
@@ -179,13 +183,14 @@ const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
                 <FormLabel>Image</FormLabel>
                 <FormControl>
                   <ImageUpload
-                    value={field.value}
+                    value={field.value || []}
                     onChange={(url) => field.onChange([...field.value, url])}
-                    onRemove={(url) =>
-                      field.onChange([
-                        ...field.value.filter((image) => image !== url),
-                      ])
-                    }
+                    onRemove={(url) => {
+                      const updatedValue = field.value.filter(
+                        (image) => image !== url
+                      );
+                      field.onChange(updatedValue);
+                    }}
                   />
                 </FormControl>
                 <FormMessage className="text-red-500" />
@@ -269,33 +274,35 @@ const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
                 </FormItem>
               )}
             />
-
-            <FormField
-              control={form.control}
-              name="collections"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Collections</FormLabel>
-                  <FormControl>
-                    <MultiSelect
-                      collections={collections}
-                      placeholder="Collections"
-                      value={field.value}
-                      onChange={(_id) => field.onChange([...field.value, _id])}
-                      onRemove={(_idToRemove) =>
-                        field.onChange([
-                          ...field.value.filter(
-                            (collectionId) => collectionId !== _idToRemove
-                          ),
-                        ])
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-500" />
-                </FormItem>
-              )}
-            />
-
+            {collections.length > 0 && (
+              <FormField
+                control={form.control}
+                name="collections"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Collections</FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        collections={collections}
+                        placeholder="Collections"
+                        value={field.value}
+                        onChange={(_id) =>
+                          field.onChange([...field.value, _id])
+                        }
+                        onRemove={(_idToRemove) =>
+                          field.onChange([
+                            ...field.value.filter(
+                              (collectionId) => collectionId !== _idToRemove
+                            ),
+                          ])
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-500" />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="colors"

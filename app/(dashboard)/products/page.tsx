@@ -33,11 +33,9 @@ const ProductsPage = () => {
     getProducts();
   }, []);
 
-  if (loading) {
-    return <CustomLoader />;
-  }
-
-  return (
+  return loading ? (
+    <CustomLoader />
+  ) : (
     <div className="px-10 py-5">
       <div className="flex items-center justify-between">
         <p className="text-heading2-bold text-gray-600">Collections</p>

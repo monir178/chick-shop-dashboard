@@ -20,8 +20,9 @@ import { Input } from "@/components/ui/input";
 import ImageUpload from "../customUi/ImageUpload";
 import { useParams, useRouter } from "next/navigation";
 import { KeyboardEvent, useState } from "react";
-import { toast } from "sonner";
+
 import Delete from "../customUi/Delete";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -95,7 +96,7 @@ const CollectionForm: React.FC<ICollectionFormProps> = ({ initialData }) => {
       {initialData ? (
         <div className="flex items-center justify-between">
           <p className="text-heading2-bold text-gray-600">Edit Collection</p>
-          <Delete id={initialData._id} />
+          <Delete id={initialData._id} item="collection" />
         </div>
       ) : (
         <p className="text-heading2-bold text-gray-600">Create Collection</p>
@@ -154,11 +155,11 @@ const CollectionForm: React.FC<ICollectionFormProps> = ({ initialData }) => {
                     onRemove={() => field.onChange("")}
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <div className="flex gap-6">
             <Button
               disabled={loading}
