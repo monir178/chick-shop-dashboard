@@ -51,11 +51,11 @@ const MultiSelect: React.FC<IMultiSelectProps> = ({
         {selected.map((collection) => (
           <Badge
             className="bg-transparent hover:bg-transparent text-gray-900 "
-            key={collection._id}>
-            {collection.title}
+            key={collection?._id}>
+            {collection?.title}
             <button
               type="button"
-              onClick={() => onRemove(collection._id)}
+              onClick={() => onRemove(collection?._id)}
               className="ml-1 hover:text-red-500">
               <X size={18} />
             </button>

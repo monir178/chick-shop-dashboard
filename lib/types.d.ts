@@ -30,3 +30,10 @@ type TOrderColumnType = {
     totalAmount: number;
     createdAt: string;
 }
+
+type TOrderItemType = {
+    product: TProductType;
+    color: string;
+    size: string;
+    quantity: number;
+}
