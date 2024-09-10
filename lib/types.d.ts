@@ -22,3 +22,11 @@ type TProductType = {
     updatedAt: Date;
 
 }
+
+type TOrderColumnType = {
+    _id: string;
+    customer: string;
+    products: number;
+    totalAmount: number;
+    createdAt: string;
+}
