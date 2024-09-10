@@ -21,11 +21,13 @@ const TopBar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="sticky top-0 z-20 w-full flex justify-between items-center px-8 py-4 bg-orange-100 shadow-xl lg:hidden">
+    <div className="sticky top-0 z-20 w-full flex justify-between items-center px-8 py-2 md:py-1 bg-orange-100 shadow-lg lg:hidden">
       <Link href="/">
         <div className="flex md:flex-col  items-center">
           <Image src="/logo.png" alt="logo" width={40} height={40} />
-          <h1 className="text-xl font-bold">Chick Shop</h1>
+          <h1 className="text-xl tracking-tighter text-red-600 font-bold">
+            Chick Shop
+          </h1>
         </div>
       </Link>
 

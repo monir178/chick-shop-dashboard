@@ -37,3 +37,9 @@ type TOrderItemType = {
     size: string;
     quantity: number;
 }
+
+type TCustomerType = {
+    clerkId: string;
+    name: string;
+    email: string;
+}
