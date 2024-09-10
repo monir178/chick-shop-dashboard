@@ -15,7 +15,7 @@ const LeftSideBar = () => {
       <Link href="/">
         <div className="flex gap-2  items-center">
           <Image src="/logo.png" alt="logo" width={40} height={40} />
-          <h1 className="text-xl font-bold">Chick Shop</h1>
+          <h1 className="text-xl text-red-600 font-bold">Chick Shop</h1>
         </div>
       </Link>
 
