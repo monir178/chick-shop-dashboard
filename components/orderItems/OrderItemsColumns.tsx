@@ -6,7 +6,7 @@ import { buttonVariants } from "../ui/button";
 
 export const columns: ColumnDef<TOrderItemType>[] = [
   {
-    accessorKey: "product",
+    accessorKey: "productTitle",
     header: "Product",
     cell: ({ row }) => (
       <Link

@@ -19,7 +19,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 }) => {
   const [images, setImages] = useState<string[]>([]);
 
-  console.log("Image Field value => ", value);
+  // console.log("Image Field value => ", value);
 
   const onUpload = (result: any) => {
     setImages((prevState) => {
@@ -27,15 +27,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
       setTimeout(() => {
         onChange(updatedImages);
-      }, 50);
+      }, 10);
 
       return updatedImages;
     });
 
-    console.log(result);
+    // console.log(result);
   };
 
-  console.log("Images state => ", images);
+  // console.log("Images state => ", images);
 
   return (
     <div>
