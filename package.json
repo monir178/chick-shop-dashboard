@@ -21,6 +21,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^0.2.1",
+    "date-fns": "^3.6.0",
     "lucide-react": "^0.436.0",
     "mongodb": "^6.8.0",
     "mongoose": "^8.6.0",
