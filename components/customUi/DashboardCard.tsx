@@ -27,7 +27,11 @@ export default function DashboardCard({
     initial: { backgroundPosition: "0% 50%" },
     animate: {
       backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-      transition: { duration: 4, ease: "linear", repeat: Infinity },
+      transition: {
+        duration: 3,
+        ease: "linear",
+        repeat: Infinity,
+      },
     },
   };
 
@@ -36,7 +40,7 @@ export default function DashboardCard({
       variants={gradientAnimation}
       initial="initial"
       animate="animate"
-      className="bg-gradient-to-bl relative overflow-hidden from-gray-400 via-white  to-orange-400 rounded-lg p-1"
+      className="bg-gradient-to-bl relative overflow-hidden from-gray-400 via-white  to-orange-400 rounded-lg p-[3px]"
       style={{
         backgroundSize: "200% 200%",
       }}>

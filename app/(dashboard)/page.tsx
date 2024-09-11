@@ -1,4 +1,6 @@
 import DashboardCard from "@/components/customUi/DashboardCard";
+import SalesChart from "@/components/customUi/SalesChart";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Separator } from "@/components/ui/separator";
 import {
@@ -15,7 +17,7 @@ export default async function Home() {
 
   return (
     <div className="px-4 lg:px-12 py-8 bg-gray-50 min-h-screen">
-      <p className="text-heading2-bold  text-gray-800">Dashboard</p>
+      <p className="text-heading2-bold  text-gray-600">Dashboard</p>
       <Separator className="my-8 bg-gray-300" />
 
       <div className="grid grid-cols-2 md:grid-cols-3  gap-2 md:gap-6 lg:gap-10">
@@ -35,6 +37,14 @@ export default async function Home() {
           amount={totalCustomers}
         />
       </div>
+      <Card className="mt-10">
+        <CardHeader>
+          <CardTitle>Sales Chart ($)</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <SalesChart data={graphData} />
+        </CardContent>
+      </Card>
     </div>
   );
 }
