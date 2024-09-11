@@ -26,7 +26,9 @@ export const getSalesPerMonth = async () => {
     const salesPerMonth = orders.reduce((acc, order) => {
         const monthIndex = new Date(order.createdAd).getMonth()
 
-        acc[monthIndex] = (acc[monthIndex] || 0) + order.totalAmount
+        acc[monthIndex] = (acc[monthIndex] || 0) + order.totalAmount;
+
+        return acc;
 
     }, {})
 

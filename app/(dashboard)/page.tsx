@@ -1,3 +1,6 @@
+import DashboardCard from "@/components/customUi/DashboardCard";
+
+import { Separator } from "@/components/ui/separator";
 import {
   getSalesPerMonth,
   getTotalCustomers,
@@ -6,16 +9,32 @@ import {
 
 export default async function Home() {
   const totalRevenue = await getTotalSales().then((data) => data.totalRevenue);
-
   const totalOrders = await getTotalSales().then((data) => data.totalOrders);
-
   const totalCustomers = await getTotalCustomers();
-
   const graphData = await getSalesPerMonth();
 
   return (
-    <div className="px-4 lg:px-10 py-10">
-      <p>Home</p>
+    <div className="px-4 lg:px-12 py-8 bg-gray-50 min-h-screen">
+      <p className="text-heading2-bold  text-gray-800">Dashboard</p>
+      <Separator className="my-8 bg-gray-300" />
+
+      <div className="grid grid-cols-2 md:grid-cols-3  gap-2 md:gap-6 lg:gap-10">
+        <DashboardCard
+          title="Total Revenue"
+          amount={`$ ${parseFloat(totalRevenue.toFixed(2))}`}
+          icon="CircleDollarSign"
+        />
+        <DashboardCard
+          title="Total Orders"
+          icon="ShoppingBag"
+          amount={totalOrders}
+        />
+        <DashboardCard
+          title="Total Customers"
+          icon="Users"
+          amount={totalCustomers}
+        />
+      </div>
     </div>
   );
 }
