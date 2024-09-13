@@ -31,3 +31,5 @@ export const GET = async (req: NextRequest, { params }: { params: { orderId: str
     }
 
 }
+
+export const dynamic = "force-dynamic";

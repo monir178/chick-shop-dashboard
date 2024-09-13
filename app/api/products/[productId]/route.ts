@@ -147,3 +147,5 @@ export const DELETE = async (req: NextRequest, { params }: { params: { productId
         return new NextResponse("Internal Error", { status: 500 })
     }
 }
+
+export const dynamic = "force-dynamic";
