@@ -23,6 +23,7 @@ import { KeyboardEvent, useState } from "react";
 
 import Delete from "../customUi/Delete";
 import { toast } from "sonner";
+import { useUser } from "@clerk/nextjs";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -37,6 +38,10 @@ interface ICollectionFormProps {
 const CollectionForm: React.FC<ICollectionFormProps> = ({ initialData }) => {
   const router = useRouter();
   const params = useParams();
+  const { user } = useUser();
+  console.log("user product form =>", user);
+
+  const isAdmin = user?.publicMetadata?.role === "admin";
 
   const [loading, setLoading] = useState(false);
 
@@ -164,13 +169,16 @@ const CollectionForm: React.FC<ICollectionFormProps> = ({ initialData }) => {
             )}
           />
 
-          <div className="flex gap-6">
-            <Button
-              disabled={loading}
-              className="bg-green-500 hover:bg-green-400"
-              type="submit">
-              Submit
-            </Button>
+          <div className="flex gap-6 items-center">
+            {isAdmin ? (
+              <Button type="submit" disabled={loading}>
+                Submit
+              </Button>
+            ) : (
+              <p className="text-red-600 font-bold">
+                Only Admin Can Submit Form
+              </p>
+            )}
             <Button
               className="bg-red-500 hover:bg-red-400"
               onClick={() => router.push("/collections")}

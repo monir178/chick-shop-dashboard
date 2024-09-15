@@ -1,7 +1,7 @@
 import Collection from "@/lib/models/Collection";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -29,8 +29,17 @@ export const POST = async (req: NextRequest, { params }: { params: { collectionI
     try {
         const { userId } = auth();
 
+        const user = await currentUser();
+        // console.log("User details =>", user)
+
+        const isAdmin = user?.publicMetadata?.role === "admin"
+
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 })
+        }
+
+        if (!isAdmin) {
+            return new NextResponse("User is not Admin", { status: 403 })
         }
 
         await connectToDB();
@@ -62,8 +71,17 @@ export const DELETE = async (req: NextRequest, { params }: { params: { collectio
     try {
         const { userId } = auth();
 
+        const user = await currentUser();
+        // console.log("User details =>", user)
+
+        const isAdmin = user?.publicMetadata?.role === "admin"
+
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 })
+        }
+
+        if (!isAdmin) {
+            return new NextResponse("User is not Admin", { status: 403 })
         }
 
         await connectToDB();

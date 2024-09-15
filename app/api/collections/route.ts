@@ -1,6 +1,6 @@
 import Collection from "@/lib/models/Collection";
 import { connectToDB } from "@/lib/mongoDB";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
@@ -8,8 +8,17 @@ export const POST = async (req: NextRequest) => {
 
         const { userId } = auth();
 
+        const user = await currentUser();
+        // console.log("User details =>", user)
+
+        const isAdmin = user?.publicMetadata?.role === "admin"
+
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 403 })
+            return new NextResponse("Unauthorized", { status: 401 })
+        }
+
+        if (!isAdmin) {
+            return new NextResponse("User is not Admin", { status: 403 })
         }
 
         await connectToDB();

@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import Delete from "../customUi/Delete";
 import MultiText from "../customUi/MultiText";
 import MultiSelect from "../customUi/MultiSelect";
+import { useUser } from "@clerk/nextjs";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -44,6 +45,10 @@ interface IProductFormProps {
 
 const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
   const router = useRouter();
+  const { user } = useUser();
+  console.log("user product form =>", user);
+
+  const isAdmin = user?.publicMetadata?.role === "admin";
 
   const [loading, setLoading] = useState(true);
   const [collections, setCollections] = useState<TCollectionType[]>([]);
@@ -357,10 +362,16 @@ const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
             />
           </div>
 
-          <div className="flex gap-6">
-            <Button type="submit" disabled={loading}>
-              Submit
-            </Button>
+          <div className="flex gap-6 items-center">
+            {isAdmin ? (
+              <Button type="submit" disabled={loading}>
+                Submit
+              </Button>
+            ) : (
+              <p className="text-red-600 font-bold">
+                Only Admin Can Submit Form
+              </p>
+            )}
             <Button
               disabled={loading}
               type="button"
