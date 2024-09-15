@@ -59,6 +59,14 @@
   }
 }
 
+.cl-footerActionText {
+  display: none; /* Hide the sign-up link */
+}
+
+.cl-footerActionLink {
+  display: none;
+}
+
 html,
 body,
 :root {
