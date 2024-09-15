@@ -25,6 +25,7 @@ import Delete from "../customUi/Delete";
 import MultiText from "../customUi/MultiText";
 import MultiSelect from "../customUi/MultiSelect";
 import { useUser } from "@clerk/nextjs";
+import { DeleteIcon, Trash } from "lucide-react";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -106,6 +107,11 @@ const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!isAdmin) {
+      toast.error("You don't have permission to Submit");
+      return;
+    }
+
     try {
       setLoading(true);
       const url = initialData
@@ -135,7 +141,15 @@ const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
       {initialData ? (
         <div className="flex items-center justify-between">
           <p className="text-heading2-bold">Edit Product</p>
-          <Delete id={initialData._id} item="product" />
+          {isAdmin ? (
+            <Delete id={initialData._id} item="product" />
+          ) : (
+            <Button
+              onClick={() => toast.error("You don't have permission to delete")}
+              className="bg-red-500 hover:bg-red-400">
+              <Trash />
+            </Button>
+          )}
         </div>
       ) : (
         <p className="text-heading2-bold">Create Product</p>
@@ -368,9 +382,7 @@ const ProductForm: React.FC<IProductFormProps> = ({ initialData }) => {
                 Submit
               </Button>
             ) : (
-              <p className="text-red-600 font-bold">
-                Only Admin Can Submit Form
-              </p>
+              <Button>Submit</Button>
             )}
             <Button
               disabled={loading}

@@ -1,6 +1,6 @@
 "use client";
 
-import { columns } from "@/components/collections/CollectionColumns";
+import { getColumns } from "@/components/collections/CollectionColumns";
 import CustomLoader from "@/components/customUi/CustomLoader";
 import { DataTable } from "@/components/customUi/DataTable";
 import { Button } from "@/components/ui/button";
@@ -8,11 +8,14 @@ import { Separator } from "@/components/ui/separator";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
 
 const CollectionsPage = () => {
   const [loading, setLoading] = useState(true);
   const [collections, setCollections] = useState([]);
   const router = useRouter();
+  const { user } = useUser();
+  const isAdmin = user?.publicMetadata?.role === "admin"; // check if the user is admin
 
   const getCollections = async () => {
     try {
@@ -47,7 +50,12 @@ const CollectionsPage = () => {
             </Button>
           </div>
           <Separator className="bg-gray-500 my-4" />
-          <DataTable searchKey="title" columns={columns} data={collections} />
+
+          <DataTable
+            searchKey="title"
+            columns={getColumns(isAdmin)}
+            data={collections}
+          />
         </div>
       )}
     </>

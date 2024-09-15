@@ -3,9 +3,11 @@
 import { ColumnDef } from "@tanstack/react-table";
 import Delete from "../customUi/Delete";
 import Link from "next/link";
-import { buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
+import { Trash } from "lucide-react";
+import { toast } from "sonner";
 
-export const columns: ColumnDef<TProductType>[] = [
+export const columns = (isAdmin: boolean): ColumnDef<TProductType>[] => [
   {
     accessorKey: "title",
     header: "Title",
@@ -39,6 +41,18 @@ export const columns: ColumnDef<TProductType>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <Delete item="product" id={row.original._id} />,
+    cell: ({ row }) => (
+      <div className="flex gap-2">
+        {!isAdmin ? (
+          <Button
+            onClick={() => toast.error("You don't have permission to Delete")}
+            className="bg-red-500 hover:bg-red-400">
+            <Trash />
+          </Button>
+        ) : (
+          <Delete item="product" id={row.original._id} />
+        )}
+      </div>
+    ),
   },
 ];

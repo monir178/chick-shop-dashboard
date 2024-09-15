@@ -24,6 +24,7 @@ import { KeyboardEvent, useState } from "react";
 import Delete from "../customUi/Delete";
 import { toast } from "sonner";
 import { useUser } from "@clerk/nextjs";
+import { Trash } from "lucide-react";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -67,6 +68,11 @@ const CollectionForm: React.FC<ICollectionFormProps> = ({ initialData }) => {
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!isAdmin) {
+      toast.error("You don't have permission to Submit");
+      return;
+    }
+
     try {
       setLoading(true);
       const url = initialData
@@ -101,7 +107,15 @@ const CollectionForm: React.FC<ICollectionFormProps> = ({ initialData }) => {
       {initialData ? (
         <div className="flex items-center justify-between">
           <p className="text-heading2-bold text-gray-600">Edit Collection</p>
-          <Delete id={initialData._id} item="collection" />
+          {isAdmin ? (
+            <Delete id={initialData._id} item="product" />
+          ) : (
+            <Button
+              onClick={() => toast.error("You don't have permission to delete")}
+              className="bg-red-500 hover:bg-red-400">
+              <Trash />
+            </Button>
+          )}
         </div>
       ) : (
         <p className="text-heading2-bold text-gray-600">Create Collection</p>
@@ -175,9 +189,7 @@ const CollectionForm: React.FC<ICollectionFormProps> = ({ initialData }) => {
                 Submit
               </Button>
             ) : (
-              <p className="text-red-600 font-bold">
-                Only Admin Can Submit Form
-              </p>
+              <Button>Submit</Button>
             )}
             <Button
               className="bg-red-500 hover:bg-red-400"

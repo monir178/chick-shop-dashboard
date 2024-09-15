@@ -5,12 +5,15 @@ import { DataTable } from "@/components/customUi/DataTable";
 import { columns } from "@/components/products/ProductColumns";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useUser } from "@clerk/nextjs";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ProductsPage = () => {
   const router = useRouter();
+  const { user } = useUser();
+  const isAdmin = user?.publicMetadata?.role === "admin";
 
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<TProductType[]>([]);
@@ -45,7 +48,7 @@ const ProductsPage = () => {
         </Button>
       </div>
       <Separator className="bg-gray-500 my-4" />
-      <DataTable searchKey="title" columns={columns} data={products} />
+      <DataTable searchKey="title" columns={columns(isAdmin)} data={products} />
     </div>
   );
 };
